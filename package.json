@@ -1,0 +1,23 @@
+{
+  "name": "catalogo-darede",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jv-soncini/catalogo-darede.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jv-soncini/catalogo-darede/issues"
+  },
+  "homepage": "https://github.com/jv-soncini/catalogo-darede#readme",
+  "dependencies": {
+    "uuid": "^8.1.0"
+  }
+}
