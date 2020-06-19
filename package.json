@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jv-soncini/catalogo-darede#readme",
   "dependencies": {
+    "bluebird": "^3.7.2",
     "uuid": "^8.1.0"
   }
 }

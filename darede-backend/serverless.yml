@@ -2,45 +2,93 @@ service: darede-backend
 
 custom:
   settings:
-    POSTS_TABLE: posts
+    SERVICE_TABLE: posts
 
 provider:
   name: aws
   runtime: nodejs12.x
-  environment: ${self:custom.settings}
+  stage: dev
+  environment:
+    SERVICE_TABLE: ${self:service}-${opt:stage,self:provider.stage}
   region: us-west-1
   iamRoleStatements:
     - Effect: "Allow"
       Action:
-        - dynamodb:DescribeTable
+        - dynamodb:Querry
         - dynamodb:Scan
         - dynamodb:GetItem
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.settings.POSTS_TABLE}"
+        - "*"
 
 functions:
-  createPost:
-    handler: handler.createPost
+#configurando a função create e dizendo que ela sera usada quando eu utilizar o endpoint "service" com metodo htpp post
+# handler passa o caminho onde a minha função se encontra, no caso é uma função com nome create no arquivo create, dentro da pasta "Servicos"
+  create:
+    handler: Servicos/create.create  
     events:
-    - http:
-      path: /post
-      method: post
+      - http: 
+          path: service
+          method: post
 
-  resources:
-    Resources:
-      PostsTable:
-        Type: AWS::DynamoDB::Table
-        Properties:
-          AttributeDefinitions:
-          - AttributeName: "id"
-            AttributeType: "S"
-          Keyschema:
-          - AttributeName: "id"
+#configurando a função lsit e dizendo que ela sera usada quando eu utilizar o endpoint "service" com metodo htpp get
+# handler passa o caminho onde a minha função se encontra, no caso é uma função com nome list no arquivo list, dentro da pasta "Servicos"
+  list:
+    handler: Servicos/list.list
+    events:
+      - http:
+          path: service
+          method: get
+          cors: true
+
+#configurando a função getById e dizendo que ela sera usada quando eu utilizar o endpoint com o id da informação que desejoa acessar no formato de "service/{id}" com metodo htpp get
+# handler passa o caminho onde a minha função se encontra, no caso é uma função com nome getById no arquivo get, dentro da pasta "Servicos"
+  getById:
+    handler: Servicos/get.GetById
+    events:
+      - http:
+          path: service/{id}
+          cors: true
+
+#configurando a função update e dizendo que ela sera usada quando eu utilizar o endpoint com o id da informação que desejoa acessar no formato de "service/{id}" com metodo htpp put
+# handler passa o caminho onde a minha função se encontra, no caso é uma função com nome update no arquivo update, dentro da pasta "Servicos"
+  update:
+    handler: Servicos/update.update
+    events:
+      - http:
+          path: service/{id}
+          method: put
+          cors: true
+
+#configurando a função delete e dizendo que ela sera usada quando eu utilizar o endpoint com o id da informação que desejoa acessar no formato de "service/{id}" com metodo htpp delete
+# handler passa o caminho onde a minha função se encontra, no caso é uma função com nome delete no arquivo delete, dentro da pasta "Servicos"
+  delete:
+    handler: Servicos/delete.delete
+    events:
+      - http:
+          path: service/{id}
+          method: delete
+          cors: true
+
+resources:
+  Resources:
+    ServicesDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: "id"
+            AttributeType: "S"   
+        KeySchema:
+          -
+            AttributeName: "id"
             KeyType: "HASH"
-          ProvisionedThroughput:
-            ReadCapacityUnits: 1
-            WriteCapacityUnits: 1
-          TableName: ${self:custom.settings.POST_TABLE}
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.SERVICE_TABLE}
+
+ 
