@@ -20,8 +20,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource:
-        - "*"
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:507252436531:table/${self:provider.environment.SERVICE_TABLE}"
 
 functions:
 #configurando a função create e dizendo que ela sera usada quando eu utilizar o endpoint "service" com metodo htpp post

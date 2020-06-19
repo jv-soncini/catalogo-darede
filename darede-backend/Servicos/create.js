@@ -3,7 +3,47 @@
 const uuid = require('uuid');
 const dybamodb = require('./dynamoDB');
 
+module.export.create = (event, context, callback) => {
+    const data = JSON.parse(event.body);
+    if(typeof data.text !== "string") {
+        console.error("A Validação Falhou");
+        callback (null, {
+            statusCode: 400,
+            headers: {'Content-Type': 'text/plain'},
+            body: 'não foi possivel criar o item de serviço '
+        });
+        return;
+    }
 
+
+const params = {
+    TableName: process.env.SERVICE_TABLE,
+    item: {
+        id: uuid.v1(),
+        NomeServico: data.text,
+        DescricaoServico: data.text,
+        EspecificacoesDoServico: {},
+    },
+};
+
+dynamodb.put(params, (error) => {
+    if (error) {
+        console.error(error);
+        callback(null, {
+            statusCode: error.statusCode || 501,
+            headers: {'Conte-Type': 'text/plain'},
+            body: 'Não foi possivel criar o item de serviço'
+        });
+        return;
+    }
+        
+        const response = {
+            statusCode: 200,
+            body: JSON.stringify(params.item),
+        };
+        callback(null, response);
+    });
+};
 
 
 
