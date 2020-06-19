@@ -49,17 +49,18 @@ functions:
     events:
       - http:
           path: service/{id}
+          method: get
           cors: true
 
 #configurando a função update e dizendo que ela sera usada quando eu utilizar o endpoint com o id da informação que desejoa acessar no formato de "service/{id}" com metodo htpp put
 # handler passa o caminho onde a minha função se encontra, no caso é uma função com nome update no arquivo update, dentro da pasta "Servicos"
-  update:
-    handler: Servicos/update.update
-    events:
-      - http:
-          path: service/{id}
-          method: put
-          cors: true
+  # update:
+  #   handler: Servicos/update.update
+  #   events:
+  #     - http:
+  #         path: service/{id}
+  #         method: put
+  #         cors: true
 
 #configurando a função delete e dizendo que ela sera usada quando eu utilizar o endpoint com o id da informação que desejoa acessar no formato de "service/{id}" com metodo htpp delete
 # handler passa o caminho onde a minha função se encontra, no caso é uma função com nome delete no arquivo delete, dentro da pasta "Servicos"

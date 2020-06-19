@@ -1,7 +1,7 @@
 'use strict';
 
 const uuid = require('uuid');
-const dybamodb = require('./dynamoDB');
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.export.create = (event, context, callback) => {
     const data = JSON.parse(event.body);
@@ -26,7 +26,7 @@ const params = {
     },
 };
 
-dynamodb.put(params, (error) => {
+dynamoDb.put(params, (error) => {
     if (error) {
         console.error(error);
         callback(null, {

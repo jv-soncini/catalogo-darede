@@ -1,6 +1,6 @@
 'use strict';
 
-const dynamodb = require('./dynamodb');
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.get = (event, context, callback) => {
   const params = {
@@ -11,7 +11,7 @@ module.exports.get = (event, context, callback) => {
   };
 
   
-  dynamodb.get(params, (error, result) => {
+  dynamoDb.get(params, (error, result) => {
     
     if (error) {
       console.error(error);

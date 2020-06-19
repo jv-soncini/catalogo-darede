@@ -1,13 +1,13 @@
  'use strict'
 
- const dynamodb = require('./dynamoDB');
+ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
  module.exports.list = (event, context, callback) => {
      const params = {
          TableName: process.env.SERVICE_TABLE,
      };
 
-     dynamodb.scan(params, (error, result) =>{
+     dynamoDb.scan(params, (error, result) =>{
          if (error) {
              console.error(error);
              callback(null, {

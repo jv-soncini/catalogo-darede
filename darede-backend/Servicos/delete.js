@@ -1,6 +1,6 @@
 'use strict';
 
-const dynamodb = require('./dynamodb');
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.delete = (event, context, callback) => {
   const params = {
@@ -10,7 +10,7 @@ module.exports.delete = (event, context, callback) => {
     },
   };
 
-  dynamodb.delete(params, (error) => {
+  dynamoDb.delete(params, (error) => {
     
     if (error) {
       console.error(error);
