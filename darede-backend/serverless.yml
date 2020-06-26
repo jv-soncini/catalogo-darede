@@ -31,6 +31,7 @@ functions:
       - http: 
           path: service
           method: post
+          integration: lambda
 
 #configurando a função lsit e dizendo que ela sera usada quando eu utilizar o endpoint "service" com metodo htpp get
 # handler passa o caminho onde a minha função se encontra, no caso é uma função com nome list no arquivo list, dentro da pasta "Servicos"
@@ -41,6 +42,7 @@ functions:
           path: service
           method: get
           cors: true
+          integration: lambda
 
 #configurando a função getById e dizendo que ela sera usada quando eu utilizar o endpoint com o id da informação que desejoa acessar no formato de "service/{id}" com metodo htpp get
 # handler passa o caminho onde a minha função se encontra, no caso é uma função com nome getById no arquivo get, dentro da pasta "Servicos"
@@ -51,6 +53,7 @@ functions:
           path: service/{id}
           method: get
           cors: true
+          integration: lambda
 
 #configurando a função update e dizendo que ela sera usada quando eu utilizar o endpoint com o id da informação que desejoa acessar no formato de "service/{id}" com metodo htpp put
 # handler passa o caminho onde a minha função se encontra, no caso é uma função com nome update no arquivo update, dentro da pasta "Servicos"
@@ -71,6 +74,16 @@ functions:
           path: service/{id}
           method: delete
           cors: true
+          integration: lambda
+
+  PostUsuario:
+   handler:  Users/UsersSubmit.usersSubmit
+   events:
+      - http:
+          path: users/create
+          method: post
+          cors: true
+          integration: lambda
 
 resources:
   Resources:
