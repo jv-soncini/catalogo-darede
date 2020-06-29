@@ -1,14 +1,14 @@
 'use strict'
 
-
 const uuid = require('uuid');
+// const {v1: uuid1} = require('uuid')
 const AWS = require('aws-sdk');
 
 AWS.config.setPromisseDependecy(require('bluebird'))
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-
+console.log(uuid.v1())
 module.exports.usersSubmit = async (event, context, callback) => {
     const RequestBody = Json.parse(event.body);
     const Nome = RequestBody.Nome;
@@ -16,8 +16,7 @@ module.exports.usersSubmit = async (event, context, callback) => {
 
     if (typeof Nome !== 'string' || typeof Senha !== 'string') {
         console.error('Falha na validação');
-        callback(new Error('não foi possivel cadastrar o usuario'))
-            ;
+        callback(new Error('não foi possivel cadastrar o usuario'));
     }
 
     submitUserP(UserInfo(Nome, Senha))
@@ -53,12 +52,13 @@ const submitUserP = User => {
 }
 
 const userInfo = (Nome,Senha) => {
-    const timestamp = new Date().getTime();
+    const CarimboDeData = new Date().getTime();
+    
     return {
-        id: uuid1(),
+        id: uuid.v1(),
         Nome: Nome,
         Senha: Senha,
-        cadastradoEm: timestamp,
-        AtualizadoEm: timestamp,
+        cadastradoEm: CarimboDeData,
+        AtualizadoEm: CarimboDeData,
     }
 }
