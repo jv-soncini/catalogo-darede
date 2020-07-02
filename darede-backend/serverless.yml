@@ -1,5 +1,6 @@
 service: darede-backend
 
+
 custom:
   settings:
     SERVICE_TABLE: posts
@@ -103,5 +104,8 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.SERVICE_TABLE}
+
+plugins:
+  - serverless-python-requirements
 
  

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "predeploy": "rm -rf node_modules/uuid && --plataform=linux -- arch=x64 --",
+    "deploy": "sls deploy -v"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   "homepage": "https://github.com/jv-soncini/catalogo-darede#readme",
   "dependencies": {
     "bluebird": "^3.7.2",
-    "uuid": "^8.1.0"
+    "serverless-python-requirements": "^5.1.0",
+    "uuid": "^8.2.0"
   }
 }
