@@ -4,13 +4,13 @@ const uuid = require('uuid');
 // const {v1: uuid1} = require('uuid')
 const AWS = require('aws-sdk');
 
-AWS.config.setPromisseDependecy(require('bluebird'))
+AWS.config.setPromisesDependency(require('bluebird'));
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 console.log(uuid.v1())
 module.exports.usersSubmit = async (event, context, callback) => {
-    const RequestBody = Json.parse(event.body);
+    const RequestBody = JSON.parse(JSON.stringify(event.body));
     const Nome = RequestBody.Nome;
     const Senha = RequestBody.Senha
 
