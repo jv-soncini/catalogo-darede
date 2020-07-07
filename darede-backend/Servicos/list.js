@@ -1,13 +1,13 @@
  'use strict'
-
+ const AWS = require('aws-sdk')
  const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
  module.exports.list = (event, context, callback) => {
      const params = {
-         TableName: process.env.SERVICE_TABLE,
+        TableName: process.env.SERVICE_TABLE,
      };
 
-     dynamoDb.scan(params, (error, result) =>{
+     dynamoDb.scan(params, (error, data) =>{
          if (error) {
              console.error(error);
              callback(null, {
@@ -21,7 +21,9 @@
 
          const response = {
              statusCode: 200,
-             body: JSON.stringify(result.items),
+             body: JSON.stringify({
+                 Servicos: data.Item                
+             }),
          };
          callback(null, response)
      })

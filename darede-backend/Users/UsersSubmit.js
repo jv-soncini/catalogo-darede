@@ -8,7 +8,7 @@ AWS.config.setPromisesDependency(require('bluebird'));
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-console.log(uuid.v1())
+
 module.exports.usersSubmit = async (event, context, callback) => {
     const RequestBody = JSON.parse(JSON.stringify(event.body));
     const Nome = RequestBody.Nome;
@@ -19,7 +19,7 @@ module.exports.usersSubmit = async (event, context, callback) => {
         callback(new Error('não foi possivel cadastrar o usuario'));
     }
 
-    submitUserP(UserInfo(Nome, Senha))
+    submitUserP(userInfo(Nome, Senha))
         .then(res => {
             callback(null, {
                 statusCode: 200,
@@ -35,7 +35,7 @@ module.exports.usersSubmit = async (event, context, callback) => {
             callback(null, {
                 statusCode: 500,
                 body: JSON.stringify({
-                    message: 'incapaz de cadastrar o ususario com Nome ${Nome}'
+                    message: 'incapaz de cadastrar o usuario com Nome ${Nome}'
                 })
             })
         })
@@ -44,21 +44,22 @@ module.exports.usersSubmit = async (event, context, callback) => {
 const submitUserP = User => {
     console.log('cadastrando usuario');
     const userInfo = {
-        TableName: Process.env.SERVICE_TABLE,
+        TableName: process.env.SERVICE_TABLE,
         Item: User,
     };
     return dynamoDb.put(userInfo).promise()
     .then(res => User);
 }
 
-const userInfo = (Nome,Senha) => {
+
+const userInfo = (Nome, Senha) => {
     const CarimboDeData = new Date().getTime();
-    
+
     return {
         id: uuid.v1(),
         Nome: Nome,
         Senha: Senha,
         cadastradoEm: CarimboDeData,
         AtualizadoEm: CarimboDeData,
-    }
-}
+    };
+};

@@ -39,7 +39,7 @@ functions:
     handler: Servicos/list.list
     events:
       - http:
-          path: service
+          path: /service
           method: get
           cors: true
           integration: lambda
@@ -47,12 +47,11 @@ functions:
 #configurando a função getById e dizendo que ela sera usada quando eu utilizar o endpoint com o id da informação que desejoa acessar no formato de "service/{id}" com metodo htpp get
 # handler passa o caminho onde a minha função se encontra, no caso é uma função com nome getById no arquivo get, dentro da pasta "Servicos"
   getById:
-    handler: Servicos/get.GetById
+    handler: Servicos/get.get
     events:
       - http:
           path: service/{id}
           method: get
-          cors: true
           integration: lambda
 
 #configurando a função update e dizendo que ela sera usada quando eu utilizar o endpoint com o id da informação que desejoa acessar no formato de "service/{id}" com metodo htpp put

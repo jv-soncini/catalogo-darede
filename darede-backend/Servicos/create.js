@@ -1,51 +1,49 @@
 'use strict';
 
 const uuid = require('uuid');
+const AWS = require('aws-sdk'); 
+
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.export.create = (event, context, callback) => {
-    const data = JSON.parse(event.body);
-    if(typeof data.text !== "string") {
-        console.error("A Validação Falhou");
-        callback (null, {
-            statusCode: 400,
-            headers: {'Content-Type': 'text/plain'},
-            body: 'não foi possivel criar o item de serviço '
-        });
-        return;
-    }
+module.exports.create = (event, context, callback) => {
+  const timestamp = new Date().getTime();
+  const data = JSON.parse(JSON.stringify(event.body));
+  const NomeServico = data.NomeServico
+  const DescricaoServico = data.DescricaoServico
+  if (typeof NomeServico !== 'string' || typeof DescricaoServico !== 'string' ) {
+    console.error('Validation Failed');
+    callback(new Error('Couldn\'t create the todo item.'));
+    return;
+  }
 
-
-const params = {
+  const params = {
     TableName: process.env.SERVICE_TABLE,
-    item: {
-        id: uuid.v1(),
-        NomeServico: data.text,
-        DescricaoServico: data.text,
-        EspecificacoesDoServico: {},
+    Item: {
+      id: uuid.v1(),
+      NomeServico: NomeServico,
+      DescricaoServico: DescricaoServico,
+      createdAt: timestamp,
+      updatedAt: timestamp,
     },
-};
+  };
 
-dynamoDb.put(params, (error) => {
+
+  dynamoDb.put(params, (error) => {
+   
     if (error) {
-        console.error(error);
-        callback(null, {
-            statusCode: error.statusCode || 501,
-            headers: {'Conte-Type': 'text/plain'},
-            body: 'Não foi possivel criar o item de serviço'
-        });
-        return;
+      console.error(error);
+      callback(new Error('nao foi possivel criar o serviço'));
+      return;
     }
-        
-        const response = {
-            statusCode: 200,
-            body: JSON.stringify(params.item),
-        };
-        callback(null, response);
-    });
+
+    
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(params.Item),
+    };
+    callback(null, response);
+  });
 };
-
-
 
 
 

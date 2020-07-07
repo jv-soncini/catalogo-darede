@@ -1,16 +1,16 @@
 'use strict';
-
+const AWS = require('aws-sdk')
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.get = (event, context, callback) => {
-  const params = {
+   console.log(JSON.stringify(event));
+   const params = {
     TableName: process.env.SERVICE_TABLE,
     Key: {
       id: event.pathParameters.id,
     },
   };
 
-  
   dynamoDb.get(params, (error, result) => {
     
     if (error) {
@@ -18,7 +18,7 @@ module.exports.get = (event, context, callback) => {
       callback(null, {
         statusCode: error.statusCode || 501,
         headers: { 'Content-Type': 'text/plain' },
-        body: 'não foi possivel buscar o item de serviço',
+        body: 'não foi possivel buscar o serviço',
       });
       return;
     }
