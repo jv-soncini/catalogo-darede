@@ -7,7 +7,7 @@ module.exports.get = (event, context, callback) => {
    const params = {
     TableName: process.env.SERVICE_TABLE,
     Key: {
-      id: event.pathParameters.id,
+      id: event.path.id
     },
   };
 
@@ -19,6 +19,7 @@ module.exports.get = (event, context, callback) => {
         statusCode: error.statusCode || 501,
         headers: { 'Content-Type': 'text/plain' },
         body: 'não foi possivel buscar o serviço',
+        param: event.path.id
       });
       return;
     }
@@ -26,7 +27,7 @@ module.exports.get = (event, context, callback) => {
     
     const response = {
       statusCode: 200,
-      body: JSON.stringify(result.Item),
+      body: result.Item   
     };
     callback(null, response);
   });

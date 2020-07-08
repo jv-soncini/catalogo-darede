@@ -21,9 +21,10 @@
 
          const response = {
              statusCode: 200,
-             body: JSON.stringify({
-                 Servicos: data.Item                
-             }),
+             body: {
+                 Servicos: data.Items
+             }
+             
          };
          callback(null, response)
      })

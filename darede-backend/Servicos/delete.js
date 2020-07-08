@@ -4,13 +4,13 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.delete = (event, context, callback) => {
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.SERVICE_TABLE,
     Key: {
-      id: event.pathParameters.id,
+      id: event.path.id,
     },
   };
 
-  dynamoDb.delete(params, (error) => {
+  dynamoDb.delete(params, (error,) => {
     
     if (error) {
       console.error(error);
@@ -18,14 +18,30 @@ module.exports.delete = (event, context, callback) => {
         statusCode: error.statusCode || 501,
         headers: { 'Content-Type': 'text/plain' },
         body: 'não foi possivel deletar o item de serviço ',
+        param: error
       });
       return;
     }
 
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify({}),
-    };
-    callback(null, response);
+    dynamoDb.get(params, (error, result) => {
+    
+      if (error) {
+        console.error(error);
+        callback(null, {
+          statusCode: error.statusCode || 501,
+          headers: { 'Content-Type': 'text/plain' },
+          body: 'não foi possivel buscar o serviço',
+          param: event.path.id
+        });
+        return;
+      }
+      const response = {
+        statusCode: 200,
+        body: JSON.stringify("O serviço Foi removido com sucesso")
+      };
+      callback(null, response);
+    })
+    
+
   });
 };

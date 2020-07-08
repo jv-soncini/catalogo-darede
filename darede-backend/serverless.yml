@@ -1,5 +1,7 @@
 service: darede-backend
 
+
+
 custom:
   settings:
     SERVICE_TABLE: posts
