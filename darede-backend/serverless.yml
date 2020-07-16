@@ -22,13 +22,20 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:507252436531:table/${self:provider.environment.SERVICE_TABLE}"
+        - cloudformation:CreateStack
+        - cloudformation:CreateChangeSet
+        - cloudformation:ListStacks
+        - cloudformation:UpdateStack
+        - cloudformation:DescribeChangeSet
+        - cloudformation:ExecuteChangeSet
+        - s3:GetObject
+      Resource: ["arn:aws:dynamodb:${opt:region, self:provider.region}:507252436531:table/${self:provider.environment.SERVICE_TABLE}", "*","arn:aws:s3:::cloudformation-cssolucoes" ]
 
 functions:
 #configurando a função create e dizendo que ela sera usada quando eu utilizar o endpoint "service" com metodo htpp post
 # handler passa o caminho onde a minha função se encontra, no caso é uma função com nome create no arquivo create, dentro da pasta "Servicos"
   create:
-    handler: Servicos/create.create  
+    handler: Service/create.create  
     events:
       - http: 
           path: service
@@ -38,7 +45,7 @@ functions:
 #configurando a função lsit e dizendo que ela sera usada quando eu utilizar o endpoint "service" com metodo htpp get
 # handler passa o caminho onde a minha função se encontra, no caso é uma função com nome list no arquivo list, dentro da pasta "Servicos"
   list:
-    handler: Servicos/list.list
+    handler: Service/list.list
     events:
       - http:
           path: /service
@@ -49,7 +56,7 @@ functions:
 #configurando a função getById e dizendo que ela sera usada quando eu utilizar o endpoint com o id da informação que desejoa acessar no formato de "service/{id}" com metodo htpp get
 # handler passa o caminho onde a minha função se encontra, no caso é uma função com nome getById no arquivo get, dentro da pasta "Servicos"
   getById:
-    handler: Servicos/get.get
+    handler: Service/get.get
     events:
       - http:
           path: service/{id}
@@ -69,7 +76,7 @@ functions:
 #configurando a função delete e dizendo que ela sera usada quando eu utilizar o endpoint com o id da informação que desejoa acessar no formato de "service/{id}" com metodo htpp delete
 # handler passa o caminho onde a minha função se encontra, no caso é uma função com nome delete no arquivo delete, dentro da pasta "Servicos"
   delete:
-    handler: Servicos/delete.delete
+    handler: Service/delete.delete
     events:
       - http:
           path: service/{id}
@@ -85,6 +92,18 @@ functions:
           method: post
           cors: true
           integration: lambda
+  
+  
+  ServiceCloudForm:
+   handler: CloudForm/EC2Execute.execute
+   events:
+      - http:
+          path: Service/CloudFormExecute
+          method: post
+          cors: true
+          integration: lambda
+
+  
 
 resources:
   Resources:
