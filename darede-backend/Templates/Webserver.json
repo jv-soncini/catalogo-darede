@@ -1,0 +1,460 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Mappings": {
+        "AWSInstanceType2Arch": {
+            "t1.micro": {
+                "Arch": "HVM64"
+            },
+            "t2.nano": {
+                "Arch": "HVM64"
+            },
+            "t2.micro": {
+                "Arch": "HVM64"
+            },
+            "t2.small": {
+                "Arch": "HVM64"
+            },
+            "t2.medium": {
+                "Arch": "HVM64"
+            },
+            "t2.large": {
+                "Arch": "HVM64"
+            },
+            "m1.small": {
+                "Arch": "HVM64"
+            },
+            "m1.medium": {
+                "Arch": "HVM64"
+            },
+            "m1.large": {
+                "Arch": "HVM64"
+            },
+            "m1.xlarge": {
+                "Arch": "HVM64"
+            },
+            "m2.xlarge": {
+                "Arch": "HVM64"
+            },
+            "m2.2xlarge": {
+                "Arch": "HVM64"
+            },
+            "m2.4xlarge": {
+                "Arch": "HVM64"
+            },
+            "m3.medium": {
+                "Arch": "HVM64"
+            },
+            "m3.large": {
+                "Arch": "HVM64"
+            },
+            "m3.xlarge": {
+                "Arch": "HVM64"
+            },
+            "m3.2xlarge": {
+                "Arch": "HVM64"
+            },
+            "m4.large": {
+                "Arch": "HVM64"
+            },
+            "m4.xlarge": {
+                "Arch": "HVM64"
+            },
+            "m4.2xlarge": {
+                "Arch": "HVM64"
+            },
+            "m4.4xlarge": {
+                "Arch": "HVM64"
+            },
+            "m4.10xlarge": {
+                "Arch": "HVM64"
+            },
+            "c1.medium": {
+                "Arch": "HVM64"
+            },
+            "c1.xlarge": {
+                "Arch": "HVM64"
+            },
+            "c3.large": {
+                "Arch": "HVM64"
+            },
+            "c3.xlarge": {
+                "Arch": "HVM64"
+            },
+            "c3.2xlarge": {
+                "Arch": "HVM64"
+            },
+            "c3.4xlarge": {
+                "Arch": "HVM64"
+            },
+            "c3.8xlarge": {
+                "Arch": "HVM64"
+            },
+            "c4.large": {
+                "Arch": "HVM64"
+            },
+            "c4.xlarge": {
+                "Arch": "HVM64"
+            },
+            "c4.2xlarge": {
+                "Arch": "HVM64"
+            },
+            "c4.4xlarge": {
+                "Arch": "HVM64"
+            },
+            "c4.8xlarge": {
+                "Arch": "HVM64"
+            },
+            "g2.2xlarge": {
+                "Arch": "HVMG2"
+            },
+            "g2.8xlarge": {
+                "Arch": "HVMG2"
+            },
+            "r3.large": {
+                "Arch": "HVM64"
+            },
+            "r3.xlarge": {
+                "Arch": "HVM64"
+            },
+            "r3.2xlarge": {
+                "Arch": "HVM64"
+            },
+            "r3.4xlarge": {
+                "Arch": "HVM64"
+            },
+            "r3.8xlarge": {
+                "Arch": "HVM64"
+            },
+            "i2.xlarge": {
+                "Arch": "HVM64"
+            },
+            "i2.2xlarge": {
+                "Arch": "HVM64"
+            },
+            "i2.4xlarge": {
+                "Arch": "HVM64"
+            },
+            "i2.8xlarge": {
+                "Arch": "HVM64"
+            },
+            "d2.xlarge": {
+                "Arch": "HVM64"
+            },
+            "d2.2xlarge": {
+                "Arch": "HVM64"
+            },
+            "d2.4xlarge": {
+                "Arch": "HVM64"
+            },
+            "d2.8xlarge": {
+                "Arch": "HVM64"
+            },
+            "hi1.4xlarge": {
+                "Arch": "HVM64"
+            },
+            "hs1.8xlarge": {
+                "Arch": "HVM64"
+            },
+            "cr1.8xlarge": {
+                "Arch": "HVM64"
+            },
+            "cc2.8xlarge": {
+                "Arch": "HVM64"
+            }
+        },
+        "AWSRegionArch2AMI": {
+            "us-east-1": {
+                "HVM64": "ami-066027b63b44ebc0a",
+                "HVMG2": "ami-0ea51afb2084a5bf3"
+            },
+            "us-east-2": {
+                "HVM64": "ami-09887484cc0721114",
+                "HVMG2": "ami-0c8f04a4e82d45248"
+            },
+            "us-west-1": {
+                "HVM64": "ami-05b1b0e2065a73a53",
+                "HVMG2": "ami-0413e0d0fc9173aed"
+            },
+            "us-west-2": {
+                "HVM64": "ami-0d270a69ac13b22c3",
+                "HVMG2": "ami-0b2a776780bc56851"
+            },
+            "eu-west-1": {
+                "HVM64": "ami-079b9207facfcaf0e",
+                "HVMG2": "ami-04e1a4e612eedbbc3"
+            },
+            "eu-west-2": {
+                "HVM64": "ami-0746bb5dcdb5f08fe",
+                "HVMG2": "ami-0b4b1178457b3a06c"
+            },
+            "eu-west-3": {
+                "HVM64": "ami-0f4c84f7511a7b98e",
+                "HVMG2": "ami-08516a90c447806d8"
+            },
+            "eu-central-1": {
+                "HVM64": "ami-09415feedc2d22008",
+                "HVMG2": "ami-023e1f91c848fc49d"
+            },
+            "ap-northeast-1": {
+                "HVM64": "ami-0d1a6c2b848d23a6d",
+                "HVMG2": "ami-09de4ee1721cb8f29"
+            },
+            "ap-northeast-2": {
+                "HVM64": "ami-00df969d08a3ea730",
+                "HVMG2": "ami-0fcb3bb296f15b982"
+            },
+            "ap-southeast-1": {
+                "HVM64": "ami-0e13f5fb9f9f3c104",
+                "HVMG2": "ami-0e7f0bfc03fb01aef"
+            },
+            "ap-southeast-2": {
+                "HVM64": "ami-0d63d6457a180078e",
+                "HVMG2": "ami-0778a46755a9c389d"
+            },
+            "ap-south-1": {
+                "HVM64": "ami-09b1626b27596815f",
+                "HVMG2": "ami-0c046658d5b68c1af"
+            },
+            "sa-east-1": {
+                "HVM64": "ami-091adbf53613eeef1",
+                "HVMG2": "ami-0a75c46ee538159e8"
+            },
+            "ca-central-1": {
+                "HVM64": "ami-09ff1197737556c58",
+                "HVMG2": "ami-054e5b309c4dca528"
+            }
+        }
+    },
+    "Metadata": {
+        "AWS::CloudFormation::Designer": {
+            "58185fff-af32-4488-9b05-db170bd932fc": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 320,
+                    "y": 120
+                },
+                "z": 0,
+                "embeds": [],
+                "isassociatedwith": [
+                    "b7a2abe5-2f18-40e5-8532-8b378bdb1918"
+                ]
+            },
+            "b7a2abe5-2f18-40e5-8532-8b378bdb1918": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 480,
+                    "y": 120
+                },
+                "z": 0,
+                "embeds": []
+            }
+        }
+    },
+    "Resources": {
+        "WebServer": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AWSRegionArch2AMI",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        {
+                            "Fn::FindInMap": [
+                                "AWSInstanceType2Arch",
+                                "t2.micro",
+                                "Arch"
+                            ]
+                        }
+                    ]
+                },
+                "InstanceType": "t2.micro",
+                "KeyName": "TesteKeypair",
+                "UserData": {
+                    "Fn::Base64": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "#!/bin/bash -xe\n",
+                                "apt-get update\n",
+                                "apt-get install -y python-pip apache2\n",
+                                "pip install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz\n",
+                                "/usr/local/bin/cfn-init -v ",
+                                "         --stack ",
+                                {
+                                    "Ref": "AWS::StackName"
+                                },
+                                "         --resource WebServer ",
+                                "         --configsets InstallAndRun ",
+                                "         --region ",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                "\n/usr/local/bin/cfn-signal -e $? ",
+                                "         --stack ",
+                                {
+                                    "Ref": "AWS::StackName"
+                                },
+                                "         --resource WebServer ",
+                                "         --region ",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                "\n/bin/sh /etc/cfn/get.sh"
+                            ]
+                        ]
+                    }
+                },
+                "SecurityGroupIds": [
+                    {
+                        "Ref": "SecGRP"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "58185fff-af32-4488-9b05-db170bd932fc"
+                },
+                "AWS::CloudFormation::Init": {
+                    "configSets": {
+                        "InstallAndRun": [
+                            "Install"
+                        ]
+                    },
+                    "Install": {
+                        "files": {
+                            "/etc/cfn/cfn-hup.conf": {
+                                "content": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "[main]\n",
+                                            "stack=",
+                                            {
+                                                "Ref": "AWS::StackId"
+                                            },
+                                            "\n",
+                                            "region=",
+                                            {
+                                                "Ref": "AWS::Region"
+                                            },
+                                            "\n"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000400",
+                                "owner": "root",
+                                "group": "root"
+                            },
+                            "/etc/cfn/hooks.d/cfn-auto-reloader.conf": {
+                                "content": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "[cfn-auto-reloader-hook]\n",
+                                            "triggers=post.update\n",
+                                            "path=Resources.WebServer.Metadata.AWS::CloudFormation::Init\n",
+                                            "action=/usr/local/bin/cfn-init -v ",
+                                            "         --stack ",
+                                            {
+                                                "Ref": "AWS::StackName"
+                                            },
+                                            "         --resource WebServer ",
+                                            "         --configsets InstallAndRun ",
+                                            "         --region ",
+                                            {
+                                                "Ref": "AWS::Region"
+                                            },
+                                            "\n",
+                                            "runas=root\n"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000400",
+                                "owner": "root",
+                                "group": "root"
+                            },
+                            "/etc/cfn/get.sh": {
+                                "content": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "service reload apache2",
+                                            "service reload ssh"
+                                        ]
+                                    ]
+                                },
+                                "mode": "000777",
+                                "owner": "root",
+                                "group": "root"
+                            }
+                        }
+                    }
+                },
+                "services": {
+                    "sysvinit": {
+                        "apache2": {
+                            "enabled": "true",
+                            "ensureRunning": "true"
+                        },
+                        "ssh": {
+                            "enabled": "true",
+                            "ensureRunning": "true"
+                        },
+                        "cfn-hup": {
+                            "enabled": "true",
+                            "ensureRunning": "true",
+                            "files": [
+                                "/etc/cfn/cfn-hup.conf",
+                                "/etc/cfn/hooks.d/cfn-auto-reloader.conf"
+                            ]
+                        }
+                    }
+                }
+            },
+            "CreationPolicy": {
+                "ResourceSignal": {
+                    "Timeout": "PT5M"
+                }
+            }
+        },
+        "SecGRP": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Liberar portas dos servicos instalados",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "80",
+                        "ToPort": "80",
+                        "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "443",
+                        "ToPort": "443",
+                        "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "b7a2abe5-2f18-40e5-8532-8b378bdb1918"
+                }
+            }
+        }
+    }
+}

@@ -28,6 +28,7 @@ provider:
         - cloudformation:UpdateStack
         - cloudformation:DescribeChangeSet
         - cloudformation:ExecuteChangeSet
+        - cloudformation:DescribeStacks
         - s3:GetObject
       Resource: ["arn:aws:dynamodb:${opt:region, self:provider.region}:507252436531:table/${self:provider.environment.SERVICE_TABLE}", "*","arn:aws:s3:::cloudformation-cssolucoes" ]
 
@@ -102,6 +103,18 @@ functions:
           method: post
           cors: true
           integration: lambda
+
+
+  DescribleStack:
+   handler: CloudForm/DescribleWebServer.describle
+   events:
+      - http:
+          path: Service/CloudFormDescrible
+          method: get
+          cors: true
+          integration: lambda
+
+    
 
   
 
