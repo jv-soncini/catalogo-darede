@@ -311,12 +311,7 @@
                             ]
                         ]
                     }
-                },
-                "SecurityGroupIds": [
-                    {
-                        "Ref": "SecGRP"
-                    }
-                ]
+                }
             },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
@@ -424,37 +419,6 @@
                     "Timeout": "PT5M"
                 }
             }
-        },
-        "SecGRP": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Liberar portas dos servicos instalados",
-                "SecurityGroupIngress": [
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "80",
-                        "ToPort": "80",
-                        "CidrIp": "0.0.0.0/0"
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "443",
-                        "ToPort": "443",
-                        "CidrIp": "0.0.0.0/0"
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "22",
-                        "ToPort": "22",
-                        "CidrIp": "0.0.0.0/0"
-                    }
-                ]
-            },
-            "Metadata": {
-                "AWS::CloudFormation::Designer": {
-                    "id": "b7a2abe5-2f18-40e5-8532-8b378bdb1918"
-                }
-            }
+        }
         }
     }
-}

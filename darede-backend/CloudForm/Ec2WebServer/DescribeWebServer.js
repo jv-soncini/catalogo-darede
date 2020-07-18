@@ -2,9 +2,10 @@
 const AWS = require('aws-sdk');
 const cloudFormation = new AWS.CloudFormation();
 
-module.exports.describle = (event, context, callback) => {
+module.exports.describe = (event, context, callback) => {
    
-    var params = {};
+    var params = {
+    };
 
       cloudFormation.describeStacks(params, (err, data) => {
         if (err){
@@ -16,14 +17,12 @@ module.exports.describle = (event, context, callback) => {
           return; 
         } 
 
-
        const response = {
          statuscode: 200,
          data: data
        }
 
        callback(null, response)
-})
-
+  })
 }
 
