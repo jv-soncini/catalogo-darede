@@ -12,6 +12,9 @@ provider:
   environment:
     SERVICE_TABLE: ${self:service}-${opt:stage,self:provider.stage}
     USERS_TABLE:  ${self:service}-${opt:stage,self:provider.stage}
+    GROUPS_TABLE: ${self:service}-${opt:stage,self:provider.stage}
+    WORKLOAD_TABLE: ${self:service}-${opt:stage,self:provider.stage}
+
   region: us-west-1
   iamRoleStatements:
     - Effect: "Allow"
@@ -40,13 +43,20 @@ provider:
         - ec2:RunInstances
         - ec2:DescribeInstances
         - ec2:CreateKeyPair
-        
+
+        # IAM Policy
+        - iam:CreateGroup
+        - iam:CreateUser
+        - iam:AddUserToGroup
+        - iam:CreateLoginProfile
+        - iam:ListGroups
+        - iam:GetGroup	
+        - iam:ListUsers
+
+
       Resource: ["arn:aws:dynamodb:${opt:region, self:provider.region}:507252436531:table/${self:provider.environment.SERVICE_TABLE}", "*","arn:aws:s3:::cloudformation-cssolucoes" ]
 
 functions:
-
-
-
 # <FUNÇÕES DE SERVIÇOS>
 
 #configurando a função create e dizendo que ela sera usada quando eu utilizar o endpoint "service" com metodo htpp post
@@ -162,6 +172,60 @@ functions:
           method: post
           cors: true
           integration: lambda
+
+
+  ListarUsuarios:
+   handler:  Users/ListUsers.list
+   events:
+      - http:
+          path: users/list
+          method: get
+          cors: true
+          integration: lambda
+
+
+  # <FUNÇÕES DE GRUPOS>
+  
+  CreateGroup:
+   handler: Groups/CreateGroup.create
+   events:
+      - http:
+          path: Groups/Create
+          method: post
+          cors: true
+          integration: lambda
+
+
+  ListGroups:
+   handler: Groups/ListAllGroups.list
+   events:
+      - http:
+          path: Groups/ListGroups
+          method: get
+          cors: true
+          integration: lambda
+
+
+  ListParticipants:
+   handler: Groups/ListParticipants.GetGroup
+   events:
+      - http:
+          path: Groups/ListParticipants
+          method: get
+          cors: true
+          integration: lambda
+
+
+  AddUserToGroup:
+   handler: Groups/AddUserToGroup.add
+   events:
+      - http:
+          path: Groups/AddUser
+          method: post
+          cors: true
+          integration: lambda
+
+  #</FUNÇÕES DE GRUPOS>
   
 
 resources:
@@ -182,10 +246,39 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+
     UsersTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         TableName: ${self:provider.environment.USERS_TABLE}-Usuarios
+        AttributeDefinitions:
+        - AttributeName: "idUsers"
+          AttributeType: "S"   
+        KeySchema:
+        - AttributeName: "idUsers"
+          KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+          
+    GroupsTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:provider.environment.GROUPS_TABLE}-Grupos
+        AttributeDefinitions:
+        - AttributeName: "idUsers"
+          AttributeType: "S"   
+        KeySchema:
+        - AttributeName: "idUsers"
+          KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    WorkloadsTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:provider.environment.WORKLOADS_TABLE}-Workloads                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
         AttributeDefinitions:
         - AttributeName: "idUsers"
           AttributeType: "S"   
