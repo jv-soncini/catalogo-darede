@@ -10,10 +10,10 @@ provider:
   runtime: nodejs12.x
   stage: dev
   environment:
-    SERVICE_TABLE: ${self:service}-${opt:stage,self:provider.stage}
-    USERS_TABLE:  ${self:service}-${opt:stage,self:provider.stage}
-    GROUPS_TABLE: ${self:service}-${opt:stage,self:provider.stage}
-    WORKLOAD_TABLE: ${self:service}-${opt:stage,self:provider.stage}
+    SERVICE_TABLE: ${self:service}-${opt:stage,self:provider.stage}-services
+    USERS_TABLE:  ${self:service}-${opt:stage,self:provider.stage}-Users
+    GROUPS_TABLE: ${self:service}-${opt:stage,self:provider.stage}-Groups
+    WORKLOADS_TABLE: ${self:service}-${opt:stage,self:provider.stage}-Workloads
 
   region: us-west-1
   iamRoleStatements:
@@ -184,6 +184,16 @@ functions:
           integration: lambda
 
 
+  Login:
+   handler:  Users/LoginUser.login
+   events:
+      - http:
+          path: users/login
+          method: post
+          cors: true
+          integration: lambda
+
+
   # <FUNÇÕES DE GRUPOS>
   
   CreateGroup:
@@ -234,7 +244,7 @@ resources:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:
-        TableName: ${self:provider.environment.SERVICE_TABLE}-Services
+        TableName: ${self:provider.environment.SERVICE_TABLE}
         AttributeDefinitions:
           -
             AttributeName: "id"
@@ -250,7 +260,7 @@ resources:
     UsersTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
-        TableName: ${self:provider.environment.USERS_TABLE}-Usuarios
+        TableName: ${self:provider.environment.USERS_TABLE}
         AttributeDefinitions:
         - AttributeName: "idUsers"
           AttributeType: "S"   
@@ -264,7 +274,7 @@ resources:
     GroupsTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
-        TableName: ${self:provider.environment.GROUPS_TABLE}-Grupos
+        TableName: ${self:provider.environment.GROUPS_TABLE}
         AttributeDefinitions:
         - AttributeName: "idUsers"
           AttributeType: "S"   
@@ -278,7 +288,7 @@ resources:
     WorkloadsTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
-        TableName: ${self:provider.environment.WORKLOADS_TABLE}-Workloads                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        TableName: ${self:provider.environment.WORKLOADS_TABLE}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
         AttributeDefinitions:
         - AttributeName: "idUsers"
           AttributeType: "S"   

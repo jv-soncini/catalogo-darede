@@ -1,7 +1,7 @@
 'use strict'
 const AWS = require('aws-sdk');
 const iam = new AWS.IAM();
-
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
 module.exports.create =  (event, context, callback) => {
 
    const Data =  JSON.parse(JSON.stringify(event.body))
@@ -33,4 +33,7 @@ module.exports.create =  (event, context, callback) => {
        }
        callback(null, response);
    })
+
+
+
 }

@@ -1,29 +1,27 @@
-'use strict'
-const AWS = require('aws-sdk');
-const iam = new AWS.IAM();
+"use strict";
+const AWS = require("aws-sdk");
 
-module.exports.list =  (event, context, callback) => {
-    
-    var params = {}
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-    iam.listUsers(params, (err, data) => {
-        if (err) {
-            callback(null, {
-                StatusCode: err.statusCode || 501,
-                Error: err
-            })
-            return;
-        }
- 
- 
-      const  response = {
-            StatusCode: 201,
-            body: data
- 
-        }
-        callback(null, response);
-    })
-    
-     
+module.exports.list = (event, context, callback) => {
+  
+  var params = {
+      TableName: process.env.USERS_TABLE
+  }
 
-}
+  dynamoDb.scan(params, (err, data) => {
+    if (err) {
+      callback(null, {
+        StatusCode: err.statusCode || 501,
+        Error: err,
+      });
+      return;
+    }
+
+    const response = {
+      StatusCode: 200,
+      body: data,
+    };
+    callback(null, response);
+  });
+};

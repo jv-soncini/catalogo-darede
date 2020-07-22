@@ -1,12 +1,12 @@
 'use strict'
 
 const uuid = require('uuid');
-// const {v1: uuid1} = require('uuid')
+
 const AWS = require('aws-sdk');
 
 const iam = new AWS.IAM();
 
-AWS.config.setPromisesDependency(require('bluebird'));
+
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -29,10 +29,12 @@ module.exports.usersSubmit =  (event, context, callback) => {
     var params = {
         UserName: username
     };
+
+    
   
   
 
-      iam.createUser(params, (error) => {
+      iam.createUser(params, (error, data) => {
           
           if (error) {
               console.error(error);
@@ -44,8 +46,12 @@ module.exports.usersSubmit =  (event, context, callback) => {
     
     
     
+    var response = {
+        Status: 200,
+        body1: data
+    }
     
-    
+    callback(null, response)
 });
 
 
@@ -86,5 +92,41 @@ var LoginParams = {
 }  
     setTimeout(CadastrarLogin, 1000)
 
+  
+
+
+    const paramsTable = {
+        TableName: process.env.USERS_TABLE,
+        Item: {
+          idUsers: uuid.v1(),
+          Usuario: LoginParams.UserName,
+          PassWord: LoginParams.Password,
+          Grupos: {}
+        },
+      };
+
+
+    dynamoDb.put(paramsTable, (err,data) => {
+        
+        
+        if (err) {
+            console.error(err);
+            callback(null,{
+                Error: err,
+                processo: process.env.USERS_TABLE
+            })
+
+            return;
+          }
+      
+          
+          const response = {
+            statusCode: 200,
+            body3: paramsTable.Item,
+          };
+          callback(null, response);                                     
+    })
+  
+  
   };
   
